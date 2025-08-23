@@ -2,6 +2,7 @@ const log = require("../../utils/log")
 const UserModel = require("./user_model")
 const UserService = require("./user_service")
 const bcrypt = require("bcrypt")
+const saltRounds = parseInt(process.env.SALTROUNDS)
 
 class UserController {
   static async register(req, res) {
@@ -134,6 +135,47 @@ class UserController {
         status: true,
         message: "Berhasil update profil",
         data: user,
+      })
+    } catch (error) {
+      log.error(error.message)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
+    }
+  }
+
+  static async updatePassword(req, res) {
+    try {
+      const { idUser } = req
+      const { passwordLama, passwordBaru } = req.body
+      const user = await UserModel.findByPk(idUser)
+
+      if (!user) {
+        return res.status(404).json({
+          status: false,
+          message: "User not found",
+          data: null,
+        })
+      }
+
+      const validation = bcrypt.compareSync(passwordLama, user.password)
+      if (!validation) {
+        return res.status(401).json({
+          status: false,
+          message: "Password lama salah",
+          data: null,
+        })
+      }
+
+      const password = bcrypt.hashSync(passwordBaru, saltRounds)
+      await user.update({ password })
+
+      return res.status(200).json({
+        status: true,
+        message: "Password berhasil diubah",
+        data: null,
       })
     } catch (error) {
       log.error(error.message)

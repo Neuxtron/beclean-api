@@ -8,8 +8,6 @@ router.put("/profile", authentication, UserController.updateProfile)
 router.post("/register", UserController.register)
 router.post("/login", UserController.login)
 router.delete("/logout", authentication, UserController.logout)
-// router.post("/lupa_password/request_ubah_password", UserController.requestUbahPassword)
-// router.post("/lupa_password/check_otp", UserController.checkOtp)
-// router.post("/lupa_password/ubah_password_otp", UserController.ubahPasswordOtp)
+router.put("/update_password", authentication, UserController.updatePassword)
 
 module.exports = router;
