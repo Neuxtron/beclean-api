@@ -110,6 +110,40 @@ class UserController {
       })
     }
   }
+
+  static async updateProfile(req, res) {
+    try {
+      const { idUser } = req
+      const data = req.body
+      if (data.password) delete data.password
+      let user = await UserModel.findByPk(idUser)
+
+      const existingEmail = await UserService.getByEmail(data.email)
+      if (data.email !== user.email && existingEmail) {
+        return res.status(409).json({
+          status: false,
+          message: "Email sudah terdaftar",
+          data: null,
+        })
+      }
+
+      await user.update(data)
+      user = await UserModel.findByPk(user.id)
+
+      return res.status(200).json({
+        status: true,
+        message: "Berhasil update profil",
+        data: user,
+      })
+    } catch (error) {
+      log.error(error.message)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
+    }
+  }
 }
 
 module.exports = UserController

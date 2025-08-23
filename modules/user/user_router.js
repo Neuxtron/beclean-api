@@ -4,7 +4,7 @@ const authentication = require("../../middlewares/authentication");
 const router = express.Router();
 
 router.get("/profile", authentication, UserController.profile)
-// router.put("/profile", authentication, UserController.updateProfile)
+router.put("/profile", authentication, UserController.updateProfile)
 router.post("/register", UserController.register)
 router.post("/login", UserController.login)
 router.delete("/logout", authentication, UserController.logout)
