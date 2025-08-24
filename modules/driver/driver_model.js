@@ -1,5 +1,7 @@
 const { STRING, UUIDV4 } = require("sequelize")
 const sequelize = require("../../config/database")
+const bcrypt = require("bcrypt")
+const saltRounds = parseInt(process.env.SALTROUNDS)
 
 const DriverModel = sequelize.define("driver", {
   id: {
@@ -22,6 +24,11 @@ const DriverModel = sequelize.define("driver", {
   },
 }, {
   freezeTableName: true,
+  hooks: {
+    beforeCreate(driver) {
+      driver.password = bcrypt.hashSync(driver.password, saltRounds)
+    }
+  }
 })
 
 module.exports = DriverModel
