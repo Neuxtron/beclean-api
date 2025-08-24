@@ -1,6 +1,7 @@
 const { STRING, UUIDV4, ENUM } = require("sequelize")
 const sequelize = require("../../config/database")
 const UserModel = require("../user/user_model")
+const { supportedBanks, supportedEWallets } = require("../../utils/get_jenis_rekening")
 
 const RekeningModel = sequelize.define("rekening", {
   id: {
@@ -14,15 +15,14 @@ const RekeningModel = sequelize.define("rekening", {
     allowNull: false,
   },
   merchant: {
-    type: ENUM("echannel", "bca", "bri", "bni", "gopay", "shopeepay"),
+    type: ENUM(
+      ...supportedBanks,
+      ...supportedEWallets
+    ),
     allowNull: false,
   },
   nomor: {
     type: STRING,
-    allowNull: false,
-  },
-  jenis: {
-    type: ENUM("bank", "ewallet"),
     allowNull: false,
   },
 }, {

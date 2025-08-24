@@ -1,4 +1,4 @@
-const { STRING, UUIDV4, NUMBER, INTEGER, FLOAT } = require("sequelize")
+const { STRING, UUIDV4, INTEGER, DOUBLE } = require("sequelize")
 const sequelize = require("../../config/database")
 const bcrypt = require("bcrypt")
 const saltRounds = parseInt(process.env.SALTROUNDS)
@@ -33,17 +33,18 @@ const UserModel = sequelize.define("user", {
   saldo: {
     type: INTEGER,
     allowNull: false,
+    defaultValue: 0,
   },
   alamat: {
     type: STRING,
     allowNull: false,
   },
   latitude: {
-    type: FLOAT,
+    type: DOUBLE,
     allowNull: false,
   },
   longitude: {
-    type: FLOAT,
+    type: DOUBLE,
     allowNull: false,
   },
 }, {
