@@ -30,6 +30,6 @@ const MutasiModel = sequelize.define("mutasi", {
   freezeTableName: true,
 })
 
-MutasiModel.belongsTo(UserModel, { as: "user", foreignKey: "idUser", onDelete: "CASCADE" })
+MutasiModel.belongsTo(UserModel, { as: "user", foreignKey: "idUser", onDelete: "RESTRICT" })
 
 module.exports = MutasiModel

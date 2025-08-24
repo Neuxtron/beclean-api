@@ -41,7 +41,7 @@ class MutasiController {
       // TODO: for production, wait for xendit success response
       return res.status(200).json({
       status: true,
-        message: "Berhasil menarik dana",
+        message: "Dana sedang dikirim",
         data: null,
       })
     } catch (error) {

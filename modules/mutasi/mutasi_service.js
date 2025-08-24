@@ -28,7 +28,9 @@ class MutasiService {
     await MutasiModel.create({
       idUser: user.id,
       judul: "Penarikan Dana",
-      jumlah: -jumlah
+      jumlah: -jumlah,
+      // TODO: for production, wait for xendit success response
+      status: "selesai"
     })
   }
 
