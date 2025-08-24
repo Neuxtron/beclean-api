@@ -10,6 +10,10 @@ const UserModel = sequelize.define("user", {
     allowNull: false,
     primaryKey: true,
   },
+  nik: {
+    type: STRING,
+    allowNull: false,
+  },
   email: {
     type: STRING,
     allowNull: false,
