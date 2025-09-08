@@ -6,7 +6,8 @@ export const supportedBanks = [
 ]
 export const supportedEWallets = [
   "GOPAY",
-  "SHOPEEPAY"
+  "SHOPEEPAY",
+  "DANA"
 ]
 
 export const IS_BANK = "bank"
