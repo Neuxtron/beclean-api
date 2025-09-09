@@ -1,4 +1,6 @@
 const log = require("../../utils/log")
+const DetailJadwalModel = require("../detail_jadwal/detail_jadwal_model")
+const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
 const JadwalJemputModel = require("./jadwal_jemput_model")
 
 class JadwalJemputController {

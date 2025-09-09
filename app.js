@@ -6,10 +6,12 @@ const routes = require("./routes");
 const logger = require("./utils/logger");
 const log = require("./utils/log");
 const getUrl = require("./utils/get_url");
+const { defineAssociations } = require('./modules/associations')
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const apiVersion = process.env.API_VERSION || '/api/v1';
+defineAssociations()
 
 app.use(logger)
 app.use(cors());
