@@ -32,8 +32,7 @@ const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model")
            {
               model: DetailJadwalModel, as: "detail_jadwal",
               include: [{
-                model: ProdukSampahModel,
-                attributes: ['id', 'nama', 'harga'], as: "produk_sampah" 
+                model: ProdukSampahModel, as: "produk_sampah" 
               }]
             },
         ]
