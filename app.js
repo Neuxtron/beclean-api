@@ -6,7 +6,8 @@ const routes = require("./routes");
 const logger = require("./utils/logger");
 const log = require("./utils/log");
 const getUrl = require("./utils/get_url");
-const { defineAssociations } = require('./modules/associations')
+const { defineAssociations } = require('./modules/associations');
+const FileUpload = require("express-fileupload");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,6 +17,7 @@ defineAssociations()
 app.use(logger)
 app.use(cors());
 app.use(express.json());
+app.use(FileUpload());
 app.use("/public", express.static("public"));
 app.use(apiVersion, routes);
 
