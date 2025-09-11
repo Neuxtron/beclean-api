@@ -9,7 +9,7 @@ const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model")
         const detailJadwal = await DetailJadwalModel.findAll()
         return res.status(200).json({
             status: true,
-            message: "Berhasil mengambil jadwal penjemputan sampah",
+            message: "Berhasil mengambil detail jadwal penjemputan sampah",
             data: detailJadwal,
         })
         } catch (error) {
@@ -26,8 +26,7 @@ const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model")
     try {
         const { id } = req.params
         
-        const detailJadwal = await JadwalJemputModel.findAll({ 
-        where: { id },
+        const detailJadwal = await JadwalJemputModel.findByPk(id, {
         include: [
            {
               model: DetailJadwalModel, as: "detail_jadwal",
