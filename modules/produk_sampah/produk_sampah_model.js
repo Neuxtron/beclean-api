@@ -1,6 +1,6 @@
 const { STRING, UUIDV4, INTEGER } = require("sequelize")
 const sequelize = require("../../config/database")
-const DetailJadwalModel = require("../detail_jadwal/detail_jadwal_model")
+// const DetailJadwalModel = require("../detail_jadwal/detail_jadwal_model")
 
 const ProdukSampahModel = sequelize.define("produk_sampah", {
   id: {

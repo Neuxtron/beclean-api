@@ -1,9 +1,9 @@
-const { STRING, UUIDV4, DECIMAL } = require("sequelize")
+const { STRING, UUIDV4, DECIMAL, DATE } = require("sequelize")
 const sequelize = require("../../config/database")
-const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model")
-const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
+// const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model")
+// const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
 
-const DetailJadwalModel = sequelize.define("detail_jadwal", {
+const PenyetoranSampahModel = sequelize.define("penyetoran_sampah", {
   id: {
     type: STRING,
     defaultValue: UUIDV4,
@@ -12,7 +12,11 @@ const DetailJadwalModel = sequelize.define("detail_jadwal", {
   },
   idJadwalJemput: {
     type: STRING,
-    allowNull: false,
+    allowNull: true,
+  },
+  idUser: {
+    type: STRING,
+    allowNull: true,
   },
   idProdukSampah: {
     type: STRING,
@@ -22,6 +26,10 @@ const DetailJadwalModel = sequelize.define("detail_jadwal", {
     type: DECIMAL(5,2),
     allowNull: false,
   },
+  tanggal_setor: {
+      type: DATE,
+      allowNull: true,
+  },
 }, {
   freezeTableName: true,
 })
@@ -29,4 +37,4 @@ const DetailJadwalModel = sequelize.define("detail_jadwal", {
 // DetailJadwalModel.belongsTo(JadwalJemputModel, { as: "jadwal_jemput", foreignKey: "idJadwalJemput", onDelete: "RESTRICT" })
 // DetailJadwalModel.belongsTo(ProdukSampahModel, { as: "produk_sampah", foreignKey: "idProdukSampah", onDelete: "CASCADE" })
 
-module.exports = DetailJadwalModel
+module.exports = PenyetoranSampahModel

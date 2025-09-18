@@ -1,30 +1,43 @@
-const DetailJadwalModel = require("../detail_jadwal/detail_jadwal_model")
 const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
 const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model")
+const UserModel = require('../user/user_model')
+const PenyetoranSampahModel = require("../penyetoran_sampah/penyetoran_sampah_model")
 
 function defineAssociations() {
-  DetailJadwalModel.belongsTo(JadwalJemputModel, { 
+  PenyetoranSampahModel.belongsTo(JadwalJemputModel, { 
     as: "jadwal_jemput", 
     foreignKey: "idJadwalJemput", 
     onDelete: "RESTRICT" 
   })
 
-  DetailJadwalModel.belongsTo(ProdukSampahModel, { 
+  PenyetoranSampahModel.belongsTo(ProdukSampahModel, { 
     as: "produk_sampah", 
     foreignKey: "idProdukSampah", 
     onDelete: "CASCADE" 
   })
 
-  ProdukSampahModel.hasMany(DetailJadwalModel, { 
-    as: "detail_jadwal", 
+  PenyetoranSampahModel.belongsTo(UserModel, { 
+    as: "user", 
+    foreignKey: "idUser", 
+    onDelete: "CASCADE" 
+  })
+
+  ProdukSampahModel.hasMany(PenyetoranSampahModel, { 
+    as: "penyetoran_sampah", 
     foreignKey: "idProdukSampah", 
     onDelete: "CASCADE" 
   })
 
-  JadwalJemputModel.hasMany(DetailJadwalModel, { 
-    as: "detail_jadwal", 
+  JadwalJemputModel.hasMany(PenyetoranSampahModel, { 
+    as: "penyetoran_sampah", 
     foreignKey: "idJadwalJemput", 
     onDelete: "RESTRICT" 
+  })
+
+  UserModel.hasMany(PenyetoranSampahModel, { 
+    as: "penyetoran_sampah", 
+    foreignKey: "idUser", 
+    onDelete: "CASCADE" 
   })
 }
 

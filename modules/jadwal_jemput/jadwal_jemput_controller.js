@@ -1,6 +1,4 @@
 const log = require("../../utils/log")
-const DetailJadwalModel = require("../detail_jadwal/detail_jadwal_model")
-const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
 const JadwalJemputModel = require("./jadwal_jemput_model")
 
 class JadwalJemputController {
@@ -8,6 +6,24 @@ class JadwalJemputController {
     try {
       const { idUser } = req
       const jadwal = await JadwalJemputModel.findAll({ where: { idUser } })
+      return res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil jadwal penjemputan sampah",
+        data: jadwal,
+      })
+    } catch (error) {
+      log.error(error.message)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
+    }
+  }
+
+  static async allJadwal(req, res) {
+    try {
+      const jadwal = await JadwalJemputModel.findAll()
       return res.status(200).json({
         status: true,
         message: "Berhasil mengambil jadwal penjemputan sampah",

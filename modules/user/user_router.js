@@ -1,6 +1,7 @@
 const express = require("express");
 const UserController = require("./user_controller");
 const authentication = require("../../middlewares/authentication");
+const { isAdmin, isOperator, isAdminOrOperator } = require("../../middlewares/authorization");
 const router = express.Router();
 
 router.get("/profile", authentication, UserController.profile)
