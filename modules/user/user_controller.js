@@ -93,6 +93,24 @@ class UserController {
     }
   }
 
+  static async allUser(req, res) {
+    try {
+      let user = await UserModel.findAll()
+      res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil semua user",
+        data: user,
+      })
+    } catch (error) {
+      log.error(error.message)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
+    }
+  }
+
   static async profile(req, res) {
     try {
       const { idUser: id } = req
@@ -175,6 +193,34 @@ class UserController {
       return res.status(200).json({
         status: true,
         message: "Password berhasil diubah",
+        data: null,
+      })
+    } catch (error) {
+      log.error(error.message)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
+    }
+  }
+
+  static async removeUser(req, res) {
+    try {
+      const { id } = req.params
+      const count = await UserModel.destroy({ where: { id } })
+
+      if (count === 0) {
+        return res.status(404).json({
+          status: false,
+          message: "User tidak ditemukan",
+          data: null,
+        })
+      }
+
+      return res.status(200).json({
+        status: true,
+        message: "Berhasil menghapus user",
         data: null,
       })
     } catch (error) {

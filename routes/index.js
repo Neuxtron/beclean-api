@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const dashboardRouter = require("../modules/dashboard/dashboard_router")
 const adminRouter = require("../modules/admin/admin_router")
 const userRouter = require("../modules/user/user_router")
 const rekeningRouter = require("../modules/rekening/rekening_router")
@@ -11,6 +12,7 @@ const produkSampahRouter = require("../modules/produk_sampah/produk_sampah_route
 const detailJadwalRouter = require("../modules/penyetoran_sampah/detail_jadwal_router")
 const setorSampahRouter = require("../modules/penyetoran_sampah/setor_sampah_router")
 
+router.use("/dashboard", dashboardRouter)
 router.use("/admin", adminRouter)
 router.use("/user", userRouter)
 router.use("/rekening", rekeningRouter)

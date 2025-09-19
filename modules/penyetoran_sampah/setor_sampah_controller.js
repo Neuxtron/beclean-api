@@ -5,6 +5,7 @@ const UserModel = require("../user/user_model")
 const PenyetoranSampahModel = require("./penyetoran_sampah_model")
 
     class SetorSampahController {
+    //semua data sampah yang di setor langsung
     static async allSetorSampah(req, res) {
         try {
         const setorSampah = await PenyetoranSampahModel.findAll({

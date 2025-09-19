@@ -1,5 +1,10 @@
 const log = require("../../utils/log")
+const { Op } = require("sequelize")
+const PenyetoranSampahModel = require("../penyetoran_sampah/penyetoran_sampah_model")
+const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
 const JadwalJemputModel = require("./jadwal_jemput_model")
+const UserModel = require("../user/user_model")
+const DriverModel = require("../driver/driver_model")
 
 class JadwalJemputController {
   static async myJadwal(req, res) {
@@ -21,9 +26,68 @@ class JadwalJemputController {
     }
   }
 
+  static async getTodayJadwal(req, res) {
+    try {
+      const today = new Date()
+      const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+      const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+
+      const jadwal = await JadwalJemputModel.findAll({
+        where: {
+          jadwal: {
+            [Op.gte]: startOfDay,
+            [Op.lt]: endOfDay
+          }
+        },
+        include: [
+          {
+            model: UserModel, 
+            as: "user"
+          },
+          {
+            model: DriverModel, 
+            as: "driver"
+          },
+          {
+            model: PenyetoranSampahModel, 
+            as: "penyetoran_sampah",
+            include: [{
+              model: ProdukSampahModel, 
+              as: "produk_sampah" 
+            }]
+          }
+        ],
+        order: [['jadwal', 'ASC']] // urutkan berdasarkan jadwal
+      })
+
+      return res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil jadwal penjemputan sampah hari ini",
+        data: jadwal,
+      })
+    } catch (error) {
+      log.error(error.message)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
+    }
+  }
+
+  // semua penjemputan sampah beserta produk sampah dan berat
   static async allJadwal(req, res) {
     try {
-      const jadwal = await JadwalJemputModel.findAll()
+      const jadwal = await JadwalJemputModel.findAll({
+      include: [
+        {
+          model: PenyetoranSampahModel, as: "penyetoran_sampah",
+          include: [{
+            model: ProdukSampahModel, as: "produk_sampah" 
+          }]
+        },
+      ]
+      })
       return res.status(200).json({
         status: true,
         message: "Berhasil mengambil jadwal penjemputan sampah",

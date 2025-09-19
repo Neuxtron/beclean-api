@@ -5,10 +5,16 @@ const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
 const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model")
 
     class DetailJadwalController{
+    //semua data sampah yang di jemput
     static async allDetailJadwal(req, res) {
         try {
         const detailJadwal = await PenyetoranSampahModel.findAll({
-          where: {idUser: {[Op.is]: null}}
+          where: {idUser: {[Op.is]: null}},
+           include: [
+           {
+              model: ProdukSampahModel, as: "produk_sampah",
+            },
+        ]
         })
         return res.status(200).json({
             status: true,

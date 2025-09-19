@@ -1,7 +1,5 @@
 const { STRING, UUIDV4, DECIMAL, DATE } = require("sequelize")
 const sequelize = require("../../config/database")
-// const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model")
-// const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
 
 const PenyetoranSampahModel = sequelize.define("penyetoran_sampah", {
   id: {
@@ -33,8 +31,5 @@ const PenyetoranSampahModel = sequelize.define("penyetoran_sampah", {
 }, {
   freezeTableName: true,
 })
-
-// DetailJadwalModel.belongsTo(JadwalJemputModel, { as: "jadwal_jemput", foreignKey: "idJadwalJemput", onDelete: "RESTRICT" })
-// DetailJadwalModel.belongsTo(ProdukSampahModel, { as: "produk_sampah", foreignKey: "idProdukSampah", onDelete: "CASCADE" })
 
 module.exports = PenyetoranSampahModel
