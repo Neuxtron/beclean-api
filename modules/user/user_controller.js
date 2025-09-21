@@ -120,7 +120,9 @@ class UserController {
   static async profile(req, res) {
     try {
       const { idUser: id } = req
-      let user = await UserModel.findByPk(id)
+      let user = await UserModel.findByPk(id, {
+        include: ["rekening"]
+      })
       res.status(200).json({
         status: true,
         message: "Berhasil mengambil profil",

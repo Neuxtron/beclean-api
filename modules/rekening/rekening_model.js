@@ -30,5 +30,6 @@ const RekeningModel = sequelize.define("rekening", {
 })
 
 RekeningModel.belongsTo(UserModel, { as: "user", foreignKey: "idUser", onDelete: "CASCADE" })
+UserModel.hasMany(RekeningModel, { as: "rekening", foreignKey: "idUser", onDelete: "CASCADE" })
 
 module.exports = RekeningModel

@@ -17,7 +17,9 @@ class UserService {
   }
 
   static async createToken(id) {
-    const user = await UserModel.findByPk(id)
+    let user = await UserModel.findByPk(id, {
+      include: ["rekening"]
+    })
     if (!user) {
       user = await DriverModel.findByPk(id)
     }
