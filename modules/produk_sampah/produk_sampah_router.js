@@ -4,7 +4,6 @@ const authenAdmin = require("../../middlewares/authenAdmin");
 const { isAdmin } = require("../../middlewares/authorization");
 const router = express.Router();
 
-// TODO: auth admin
 router.get("/", ProdukSampahController.allProduk)
 router.post("/add", authenAdmin, isAdmin, ProdukSampahController.addProduk)
 router.put("/edit/:id", authenAdmin, isAdmin, ProdukSampahController.editProduk)

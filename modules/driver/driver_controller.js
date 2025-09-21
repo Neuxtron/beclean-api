@@ -120,7 +120,6 @@ class DriverController {
   }
 
   // TODO: ubah password driver
-  // TODO: auth driver
 }
 
 module.exports = DriverController

@@ -7,10 +7,8 @@ const router = express.Router();
 
 router.get("/", authentication, JadwalJemputController.myJadwal)
 
-// TODO: auth admin dan operator
 router.get("/all", authenAdmin, isAdminOrOperator, JadwalJemputController.allJadwal)
 
-// TODO: auth operator
 router.get("/today", authenAdmin, isOperator, JadwalJemputController.getTodayJadwal)
 router.post("/add", authenAdmin, isOperator, JadwalJemputController.addJadwal)
 router.post("/add_many", authenAdmin, isOperator, JadwalJemputController.addManyJadwal)

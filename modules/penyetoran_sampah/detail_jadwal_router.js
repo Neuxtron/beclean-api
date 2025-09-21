@@ -9,10 +9,8 @@ const router = express.Router();
 router.get("/:id", DetailJadwalController.detailJadwalByIdJemput)
 router.post("/add", DetailJadwalController.addDetailJadwal)
 
-// TODO: auth admin
 router.get("/", authenAdmin, isAdmin, DetailJadwalController.allDetailJadwal)
 
-// TODO: auth operator
 router.put("/edit/:id", authenAdmin, isOperator, DetailJadwalController.editDetailJadwal)
 router.delete("/remove/:id", authenAdmin, isOperator, DetailJadwalController.removeDetailJadwal)
 
