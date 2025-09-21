@@ -1,4 +1,5 @@
 const log = require("../../utils/log")
+const DriverModel = require("../driver/driver_model")
 const UserModel = require("./user_model")
 const UserService = require("./user_service")
 const bcrypt = require("bcrypt")
@@ -19,11 +20,13 @@ class UserController {
       }
       
       let user = await UserModel.create(data)
+      const role = await UserService.getRole(user.id)
       user = await UserService.createToken(user.id)
 
       return res.status(201).json({
         status: true,
         message: "Berhasil mendaftarkan user",
+        role,
         data: user,
       })
     } catch (error) {
@@ -59,9 +62,11 @@ class UserController {
       }
 
       user = await UserService.createToken(user.id)
+      const role = await UserService.getRole(user.id)
       return res.status(200).json({
         status: true,
         message: "Berhasil login",
+        role,
         data: user,
       })
     } catch (error) {
@@ -78,6 +83,7 @@ class UserController {
     try {
       const { idUser: id } = req
       await UserModel.update({ token: null }, { where: { id } })
+      await DriverModel.update({ token: null }, { where: { id } })
       res.status(200).json({
         status: true,
         message: "Berhasil logout",

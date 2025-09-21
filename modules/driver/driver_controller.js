@@ -100,6 +100,25 @@ class DriverController {
     }
   }
 
+  static async profile(req, res) {
+    try {
+      const { idUser: id } = req
+      let driver = await DriverModel.findByPk(id)
+      res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil profil",
+        data: driver,
+      })
+    } catch (error) {
+      log.error(error.message)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
+    }
+  }
+
   // TODO: ubah password driver
   // TODO: auth driver
 }

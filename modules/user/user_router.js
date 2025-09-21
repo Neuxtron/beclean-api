@@ -12,7 +12,6 @@ router.post("/login", UserController.login)
 router.delete("/logout", authentication, UserController.logout)
 router.put("/update_password", authentication, UserController.updatePassword)
 
-// TODO: auth admin
 router.get("/", authenAdmin, isAdmin, UserController.allUser)
 router.delete("/remove/:id", authenAdmin, isAdmin, UserController.removeUser)
 

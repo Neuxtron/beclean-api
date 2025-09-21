@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken")
 const log = require("../utils/log")
 const UserModel = require("../modules/user/user_model")
+const DriverModel = require("../modules/driver/driver_model")
 const secret = process.env.SECRET
 
 async function authentication(req, res, next) {
@@ -13,8 +14,14 @@ async function authentication(req, res, next) {
     const user = await UserModel.findOne({
       where: { token }
     })
-    if (user === null) throw new jwt.JsonWebTokenError("User not found")
-      
+    if (user === null) {
+      const driver = await DriverModel.findOne({
+        where: { token }
+      })
+
+      if (driver === null) throw new jwt.JsonWebTokenError("User not found")
+    }
+
     const decode = jwt.verify(token, secret)
     req.idUser = decode.id
     next()

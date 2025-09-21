@@ -2,9 +2,10 @@ const express = require("express");
 const DriverController = require("./driver_controller");
 const authenAdmin = require("../../middlewares/authenAdmin");
 const { isAdmin } = require("../../middlewares/authorization");
+const authentication = require("../../middlewares/authentication");
 const router = express.Router();
 
-// TODO: auth operator
+router.get("/", authentication, DriverController.profile)
 router.get("/", authenAdmin, isAdmin, DriverController.allDrivers)
 router.post("/add", authenAdmin, isAdmin, DriverController.addDriver)
 router.put("/edit/:id", authenAdmin, isAdmin, DriverController.editDriver)

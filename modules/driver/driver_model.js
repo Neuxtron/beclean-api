@@ -10,6 +10,10 @@ const DriverModel = sequelize.define("driver", {
     allowNull: false,
     primaryKey: true,
   },
+  email: {
+    type: STRING,
+    allowNull: false,
+  },
   nama: {
     type: STRING,
     allowNull: false,
@@ -21,6 +25,10 @@ const DriverModel = sequelize.define("driver", {
   password: {
     type: STRING,
     allowNull: false,
+  },
+  token: {
+    type: STRING,
+    allowNull: true,
   },
 }, {
   freezeTableName: true,
