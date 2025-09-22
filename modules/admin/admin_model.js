@@ -30,20 +30,20 @@ const AdminModel = sequelize.define("admin", {
     type: STRING,
     allowNull: true,
   },
-  role: {
-    type: STRING,
-    allowNull: true
-  }
   // role: {
-  // type: ENUM("admin", "operator"),
-  // allowNull: false,
-  // validate: {
-  //   isIn: {
-  //     args: [["admin", "operator"]],
-  //     msg: "Role hanya boleh admin atau operator"
-  //   }
+  //   type: STRING,
+  //   allowNull: true
   // }
-  // }
+  role: {
+    type: ENUM("admin", "operator"),
+    allowNull: false,
+    validate: {
+      isIn: {
+        args: [["admin", "operator"]],
+        msg: "Role hanya boleh admin atau operator"
+      }
+    }
+  }
 }, {
   freezeTableName: true,
   hooks: {

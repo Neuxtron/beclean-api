@@ -4,11 +4,16 @@ const ProdukSampahModel = require("./produk_sampah_model")
 const fs = require('fs')
 const path = require('path')
 const { Op } = require("sequelize");
+const ProdukSampahService = require("./produk_sampah_service")
 
 class ProdukSampahController {
   static async allProduk(req, res) {
     try {
-      const produk = await ProdukSampahModel.findAll()
+      let produk = await ProdukSampahModel.findAll()
+      produk = produk.map((item) => item.get())
+
+      const url = getUrl(req)
+      produk = ProdukSampahService.parseIcon(produk, url)
       return res.status(200).json({
         status: true,
         message: "Berhasil mengambil data Produk",
@@ -40,17 +45,13 @@ class ProdukSampahController {
       const fileSize = file.data.length
       const ext = path.extname(file.name)
       const fileName = file.md5 + ext
-      const url = getUrl(req)
-      const icon = `${url}/public/icon/${fileName}`
-      const allowedType = ['.png', '.jpg', '.jpeg', '.gif', '.webp']
-      if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid Image" })
       if (fileSize > 5000000) return res.status(422).json({ msg: "Image must be less than 5 MB" })
       file.mv(`./public/icon/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message })
         try {
             const produkData = {
                 ...data,
-                icon: icon
+                icon: fileName
             }
             const produk = await ProdukSampahModel.create(produkData)
             return res.status(201).json({
@@ -105,21 +106,12 @@ class ProdukSampahController {
       }
     }
 
-      let fileName = "";
-      if (req.files === null || !req.files.file) {
-        fileName = produk.icon ? produk.icon.split("/").pop() : "";
-      } else {
+      if (req.files !== null || req.files.file) {
         const file = req.files.file;
         const fileSize = file.data.length;
         const ext = path.extname(file.name);
         const fileName = file.md5 + ext;
-        const url = getUrl(req)
-        const icon = `${url}/public/icon/${fileName}`;
-        const allowedType = [".png", ".jpg", ".jpeg", ".gif", ".webp"];
 
-        if (!allowedType.includes(ext.toLowerCase())) {
-          return res.status(422).json({ msg: "Invalid Image" });
-        }
         if (fileSize > 5000000) {
           return res.status(422).json({ msg: "Image must be less than 5 MB" });
         }
@@ -132,7 +124,7 @@ class ProdukSampahController {
         await file.mv(`./public/icon/${fileName}`);
 
         if (fileName) {
-        data.icon = icon;
+          data.icon = fileName;
         }
       }
       await produk.update(data);
