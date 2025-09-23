@@ -11,7 +11,11 @@ class JadwalJemputController {
   static async myJadwal(req, res) {
     try {
       const { idUser } = req
-      const jadwal = await JadwalJemputModel.findAll({ where: { idUser } })
+      const role = req.query.role ?? "user"
+      
+      const jadwal = role === "user"
+          ? await JadwalJemputModel.findAll({ where: { idUser } })
+          : await JadwalJemputModel.findAll({ where: { idDriver: idUser } })
       let setoran = await PenyetoranSampahModel.findAll({
         where: { idUser },
         include: ["produk_sampah"]

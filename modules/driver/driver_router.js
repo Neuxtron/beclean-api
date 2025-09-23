@@ -5,7 +5,7 @@ const { isAdmin } = require("../../middlewares/authorization");
 const authentication = require("../../middlewares/authentication");
 const router = express.Router();
 
-router.get("/", authentication, DriverController.profile)
+router.get("/profile", authentication, DriverController.profile)
 router.get("/", authenAdmin, isAdmin, DriverController.allDrivers)
 router.post("/add", authenAdmin, isAdmin, DriverController.addDriver)
 router.put("/edit/:id", authenAdmin, isAdmin, DriverController.editDriver)
