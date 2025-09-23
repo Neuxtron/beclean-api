@@ -1,3 +1,6 @@
+const PenyetoranSampahModel = require("../penyetoran_sampah/penyetoran_sampah_model")
+const JadwalJemputModel = require("./jadwal_jemput_model")
+
 class JadwalJemputService {
   static parseSetoranSampah = (setoran, jadwal) => {
     const setoranNew = []
@@ -5,30 +8,47 @@ class JadwalJemputService {
     setoran.forEach((item) => {
       const jumlah = item.produk_sampah.harga * item.berat
 
-      const existingIndex = setoranNew.findIndex((itemNew) => {
-        return this.isSameDay(item.createdAt, itemNew.tanggal)
+      let existingIndex = setoranNew.findIndex((itemNew) => {
+        const sameDay = this.isSameDay(item.jadwal_jemput.jadwal, itemNew.tanggal)
+        const sameUser = item.idUser === itemNew.idUser
+        return sameDay && sameUser
       })
+      // if (existingIndex !== -1) {
+      //   existingIndex = setoranNew.findIndex((itemNew) => {
+      //     return itemNew.idUser
+      //   })
+      // }
 
       if (existingIndex === -1) {
         return setoranNew.push({
-          tanggal: item.createdAt,
+          tanggal: item.jadwal_jemput.jadwal,
+          idUser: item.idUser,
+          nama: item.user.nama,
           details: {
             tipe: item.idJadwalJemput ? "Penjemputan" : "Penyetoran",
             jumlah,
             berat: parseFloat(item.berat)
           }
         })
-    }
+      }
 
       setoranNew[existingIndex].details.jumlah += jumlah
       setoranNew[existingIndex].details.berat += parseFloat(item.berat)
     })
 
     jadwal.forEach((item) => {
-      setoranNew.push({
-        tanggal: item.jadwal,
-        details: null
+      const existingIndex = setoranNew.findIndex((itemNew) => {
+        return this.isSameDay(item.jadwal, itemNew.tanggal)
       })
+
+      if (existingIndex === -1) {
+        setoranNew.push({
+          tanggal: item.jadwal,
+          idUser: item.idUser,
+          nama: item.user.nama,
+          details: null
+        })
+      }
     })
 
     return setoranNew
@@ -38,6 +58,40 @@ class JadwalJemputService {
     return d1.getFullYear() === d2.getFullYear() &&
           d1.getMonth() === d2.getMonth() &&
           d1.getDate() === d2.getDate();
+  }
+
+  static async getJadwalByRole(role, idUser) {
+    if (role === "user") {
+      return await JadwalJemputModel.findAll({
+        where: { idUser },
+        include: ["user"]
+      })
+    }
+
+    return await JadwalJemputModel.findAll({
+      where: { idDriver: idUser },
+      include: ["user"]
+    })
+  }
+
+  static async getSetoranByRole(role, idUser) {
+    if (role === "user") {
+      return await PenyetoranSampahModel.findAll({
+        where: { idUser },
+        include: ["produk_sampah", "user", "jadwal_jemput"]
+      })
+    }
+
+    return await PenyetoranSampahModel.findAll({
+      include: [
+        "produk_sampah",
+        "user",
+        {
+          association: "jadwal_jemput",
+          where: { idDriver: idUser }
+        }
+      ]
+    })
   }
 }
 

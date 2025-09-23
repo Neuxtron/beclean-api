@@ -13,13 +13,8 @@ class JadwalJemputController {
       const { idUser } = req
       const role = req.query.role ?? "user"
       
-      const jadwal = role === "user"
-          ? await JadwalJemputModel.findAll({ where: { idUser } })
-          : await JadwalJemputModel.findAll({ where: { idDriver: idUser } })
-      let setoran = await PenyetoranSampahModel.findAll({
-        where: { idUser },
-        include: ["produk_sampah"]
-      })
+      const jadwal = await JadwalJemputService.getJadwalByRole(role, idUser)
+      let setoran = await JadwalJemputService.getSetoranByRole(role, idUser)
       setoran = JadwalJemputService.parseSetoranSampah(setoran, jadwal)
       return res.status(200).json({
         status: true,
