@@ -27,7 +27,7 @@ class MutasiService {
     await user.decrement({ saldo: jumlah })
     await MutasiModel.create({
       idUser: user.id,
-      judul: "Penarikan Dana",
+      judul: "Tarik Tunai",
       jumlah: -jumlah,
       // TODO: for production, wait for xendit success response
       status: "selesai"

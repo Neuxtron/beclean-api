@@ -19,7 +19,7 @@ const MutasiModel = sequelize.define("mutasi", {
     defaultValue: "pending"
   },
   judul: {
-    type: STRING,
+    type: ENUM("Tarik Tunai", "Setor Sampah", "Penjemputan Sampah"),
     allowNull: false,
   },
   jumlah: {

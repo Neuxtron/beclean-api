@@ -2,7 +2,8 @@ const log = require("../../utils/log")
 const { Op } = require('sequelize');
 const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
 const UserModel = require("../user/user_model")
-const PenyetoranSampahModel = require("./penyetoran_sampah_model")
+const PenyetoranSampahModel = require("./penyetoran_sampah_model");
+const MutasiModel = require("../mutasi/mutasi_model");
 
     class SetorSampahController {
     //semua data sampah yang di setor langsung
@@ -59,7 +60,21 @@ const PenyetoranSampahModel = require("./penyetoran_sampah_model")
     static async addSetorSampah(req, res) {
     try {
       const data = req.body
+      const { idUser, idProdukSampah, berat } = data
+
+      const produk = await ProdukSampahModel.findByPk(idProdukSampah)
+      const user = await UserModel.findByPk(idUser)
+      const harga = produk.harga * berat
+      data.harga = harga
+      
       const setorSampah = await PenyetoranSampahModel.create(data)
+      // IDEA: konfirmasi admin/operator
+      await user.increment({ saldo: harga })
+      await MutasiModel.create({
+        idUser,
+        judul: "Setor Sampah",
+        jumlah: harga,
+      })
       return res.status(201).json({
         status: true,
         message: "Berhasil menambahkan penyetoran sampah secara langsung",

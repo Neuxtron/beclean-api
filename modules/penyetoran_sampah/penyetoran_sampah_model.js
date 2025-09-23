@@ -1,4 +1,4 @@
-const { STRING, UUIDV4, DECIMAL, DATE } = require("sequelize")
+const { STRING, UUIDV4, DECIMAL, DATE, INTEGER } = require("sequelize")
 const sequelize = require("../../config/database")
 
 const PenyetoranSampahModel = sequelize.define("penyetoran_sampah", {
@@ -22,6 +22,10 @@ const PenyetoranSampahModel = sequelize.define("penyetoran_sampah", {
   },
   berat: {
     type: DECIMAL(5,2),
+    allowNull: false,
+  },
+  harga: {
+    type: INTEGER,
     allowNull: false,
   },
   // TODO: remove, use createdAt

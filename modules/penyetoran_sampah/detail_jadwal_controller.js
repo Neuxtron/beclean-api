@@ -2,7 +2,9 @@ const log = require("../../utils/log")
 const { Op } = require('sequelize');
 const PenyetoranSampahModel = require("./penyetoran_sampah_model")
 const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
-const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model")
+const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model");
+const MutasiModel = require("../mutasi/mutasi_model");
+const UserModel = require("../user/user_model");
 
     class DetailJadwalController{
     //semua data sampah yang di jemput
@@ -64,7 +66,22 @@ const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model")
     static async addDetailJadwal(req, res) {
     try {
       const data = req.body
+      const { idUser, idProdukSampah, berat } = data
+
+      const produk = await ProdukSampahModel.findByPk(idProdukSampah)
+      const user = await UserModel.findByPk(idUser)
+      const harga = produk.harga * berat
+      data.harga = harga
+      
       const detailJadwal = await PenyetoranSampahModel.create(data)
+      // IDEA: konfirmasi admin/operator
+      await user.increment({ saldo: harga })
+      await MutasiModel.create({
+        idUser,
+        judul: "Penjemputan Sampah",
+        jumlah: harga,
+        status: "selesai"
+      })
       return res.status(201).json({
         status: true,
         message: "Berhasil menambahkan detail jadwal penjemputan sampah",

@@ -7,7 +7,11 @@ class MutasiController {
   static async myMutasi(req, res) {
     try {
       const { idUser } = req
-      const mutasi = await MutasiModel.findAll({ where: { idUser } })
+      const mutasi = await MutasiModel.findAll({
+        where: { idUser },
+        order: [["createdAt", "DESC"]]
+      })
+
       return res.status(200).json({
         status: true,
         message: "Berhasil mengambil riwayat mutasi",
@@ -37,8 +41,8 @@ class MutasiController {
         })
       }
 
-      await MutasiService.xenditDisbursement(user, rekeningId, jumlah)
       // TODO: for production, wait for xendit success response
+      await MutasiService.xenditDisbursement(user, rekeningId, jumlah)
       return res.status(200).json({
       status: true,
         message: "Dana sedang dikirim",
