@@ -14,7 +14,7 @@ const PenyetoranSampahModel = sequelize.define("penyetoran_sampah", {
   },
   idUser: {
     type: STRING,
-    allowNull: true,
+    allowNull: false,
   },
   idProdukSampah: {
     type: STRING,
@@ -24,6 +24,7 @@ const PenyetoranSampahModel = sequelize.define("penyetoran_sampah", {
     type: DECIMAL(5,2),
     allowNull: false,
   },
+  // TODO: remove, use createdAt
   tanggal_setor: {
       type: DATE,
       allowNull: true,

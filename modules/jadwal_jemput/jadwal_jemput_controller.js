@@ -5,16 +5,22 @@ const ProdukSampahModel = require("../produk_sampah/produk_sampah_model")
 const JadwalJemputModel = require("./jadwal_jemput_model")
 const UserModel = require("../user/user_model")
 const DriverModel = require("../driver/driver_model")
+const JadwalJemputService = require("./jadwal_jemput_service")
 
 class JadwalJemputController {
   static async myJadwal(req, res) {
     try {
       const { idUser } = req
       const jadwal = await JadwalJemputModel.findAll({ where: { idUser } })
+      let setoran = await PenyetoranSampahModel.findAll({
+        where: { idUser },
+        include: ["produk_sampah"]
+      })
+      setoran = JadwalJemputService.parseSetoranSampah(setoran, jadwal)
       return res.status(200).json({
         status: true,
         message: "Berhasil mengambil jadwal penjemputan sampah",
-        data: jadwal,
+        data: setoran,
       })
     } catch (error) {
       log.error(error.message)
