@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.get("/:id", DetailJadwalController.detailJadwalByIdJemput)
 router.post("/add", DetailJadwalController.addDetailJadwal)
+router.post("/add_many", DetailJadwalController.addMany)
 
 router.get("/", authenAdmin, isAdmin, DetailJadwalController.allDetailJadwal)
 

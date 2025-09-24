@@ -9,21 +9,18 @@ class JadwalJemputService {
       const jumlah = item.produk_sampah.harga * item.berat
 
       let existingIndex = setoranNew.findIndex((itemNew) => {
-        const sameDay = this.isSameDay(item.jadwal_jemput.jadwal, itemNew.tanggal)
-        const sameUser = item.idUser === itemNew.idUser
-        return sameDay && sameUser
+        // const sameDay = this.isSameDay(item.jadwal_jemput.jadwal, itemNew.tanggal)
+        // const sameUser = item.idUser === itemNew.idUser
+        const sameJadwal = item.idJadwal === itemNew.idJadwal
+        return sameJadwal
       })
-      // if (existingIndex !== -1) {
-      //   existingIndex = setoranNew.findIndex((itemNew) => {
-      //     return itemNew.idUser
-      //   })
-      // }
 
       if (existingIndex === -1) {
         return setoranNew.push({
           tanggal: item.jadwal_jemput.jadwal,
           idUser: item.idUser,
-          nama: item.user.nama,
+          user: item.user,
+          idJadwal: item.idJadwalJemput,
           details: {
             tipe: item.idJadwalJemput ? "Penjemputan" : "Penyetoran",
             jumlah,
@@ -38,14 +35,16 @@ class JadwalJemputService {
 
     jadwal.forEach((item) => {
       const existingIndex = setoranNew.findIndex((itemNew) => {
-        return this.isSameDay(item.jadwal, itemNew.tanggal)
+        const sameJadwal = item.id === itemNew.idJadwal
+        return sameJadwal
       })
 
       if (existingIndex === -1) {
         setoranNew.push({
           tanggal: item.jadwal,
           idUser: item.idUser,
-          nama: item.user.nama,
+          user: item.user,
+          idJadwal: item.id,
           details: null
         })
       }

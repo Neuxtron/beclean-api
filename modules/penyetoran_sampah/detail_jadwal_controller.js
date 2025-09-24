@@ -97,6 +97,35 @@ const UserModel = require("../user/user_model");
     }
   }
 
+  static async addMany(req, res) {
+    try {
+      let { setoran: setoranRaw } = req.body
+      const setoranData = []
+      const promises = setoranRaw.map(async (item) => {
+        const idProdukSampah = item.idProdukSampah
+        const produk = await ProdukSampahModel.findByPk(idProdukSampah)
+        const harga = item.berat * produk.harga
+        setoranData.push({ ...item, harga })
+      })
+      await Promise.allSettled(promises)
+      console.log(setoranData)
+      const setoran = await PenyetoranSampahModel.bulkCreate(setoranData)
+      console.log(setoran)
+      return res.status(201).json({
+        status: true,
+        message: "Berhasil menambahkan data penjemputan sampah",
+        data: setoran,
+      })
+    } catch (error) {
+      log.error(error)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
+    }
+  }
+
   static async editDetailJadwal(req, res) {
     try {
       const { id } = req.params
