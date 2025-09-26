@@ -6,6 +6,7 @@ const ProdukSampahModel = require("../produk_sampah/produk_sampah_model");
 const UserModel = require("../user/user_model");
 const DriverModel = require("../driver/driver_model");
 const DashboardService = require("./dashboard_service");
+const getUrl = require("../../utils/get_url");
 
 class DashboardController {
   // Total semua sampah bulan ini
@@ -147,8 +148,9 @@ class DashboardController {
 
   static async dashboardAdmin(req, res) {
     try {
+      const url = getUrl(req)
       const totalPenjemputan = await DashboardService.getTotalPenjemputan()
-      const produk = await DashboardService.getProdukWeight()
+      const produk = await DashboardService.getProdukWeight(url)
       const recentPenjemputan = await DashboardService.getRecentPenjemmputan()
       return res.status(200).json({
         status: true,

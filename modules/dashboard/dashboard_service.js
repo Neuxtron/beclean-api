@@ -24,17 +24,18 @@ class DashboardService {
     return totalPenjemputan.length
   }
 
-  static async getProdukWeight() {
+  static async getProdukWeight(url) {
     let produk = await ProdukSampahModel.findAll({
       include: ["penyetoran_sampah"]
     })
     produk = produk.map((item) => {
       item = item.get()
-      const weights = item.penyetoran_sampah.map((setoran) => setoran.berat)
+      const weights = item.penyetoran_sampah.map((setoran) => parseFloat(setoran.berat))
       const total = weights.length > 0 ? weights.reduce((v, e) => v + e) : 0
       delete item.penyetoran_sampah
       return { ...item, total }
     })
+    produk = this.parseIcon(produk, url)
     return produk
   }
 
@@ -51,6 +52,13 @@ class DashboardService {
       return { ...item, harga }
     })
     return penjemputan
+  }
+
+  static async parseIcon(listProduk, url) {
+    return listProduk.map((produk) => {
+      const icon = `${url}/public/icon/${produk.icon}`
+      return { ...produk, icon }
+    })
   }
 }
 
