@@ -19,9 +19,9 @@ class DashboardService {
       }
     })
     const totalPenjemputan = allPenjemputan.filter((jadwal) => {
-      jadwal.penyetoran_sampah.length > 0;
+      return jadwal.penyetoran_sampah.length > 0;
     })
-    return totalPenjemputan
+    return totalPenjemputan.length
   }
 
   static async getProdukWeight() {
