@@ -31,7 +31,7 @@ function defineAssociations() {
   JadwalJemputModel.hasMany(PenyetoranSampahModel, { 
     as: "penyetoran_sampah", 
     foreignKey: "idJadwalJemput", 
-    onDelete: "RESTRICT" 
+    onDelete: "CASCADE" 
   })
 
   UserModel.hasMany(PenyetoranSampahModel, { 

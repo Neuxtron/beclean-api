@@ -91,6 +91,8 @@ class JadwalJemputController {
             model: ProdukSampahModel, as: "produk_sampah" 
           }]
         },
+        "user",
+        "driver",
       ]
       })
       return res.status(200).json({

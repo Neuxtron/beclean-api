@@ -5,6 +5,7 @@ const JadwalJemputModel = require("../jadwal_jemput/jadwal_jemput_model");
 const ProdukSampahModel = require("../produk_sampah/produk_sampah_model");
 const UserModel = require("../user/user_model");
 const DriverModel = require("../driver/driver_model");
+const DashboardService = require("./dashboard_service");
 
 class DashboardController {
   // Total semua sampah bulan ini
@@ -141,6 +142,30 @@ class DashboardController {
       });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  static async dashboardAdmin(req, res) {
+    try {
+      const totalPenjemputan = await DashboardService.getTotalPenjemputan()
+      const produk = await DashboardService.getProdukWeight()
+      const recentPenjemputan = await DashboardService.getRecentPenjemmputan()
+      return res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil data dashboard admin",
+        data: {
+          totalPenjemputan,
+          produk,
+          recentPenjemputan,
+        },
+      })
+    } catch (error) {
+      log.error(error.message)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
     }
   }
 }
