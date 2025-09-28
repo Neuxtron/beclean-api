@@ -44,7 +44,7 @@ class ProdukSampahController {
       const file = req.files.file
       const fileSize = file.data.length
       const ext = path.extname(file.name)
-      const fileName = file.md5 + ext
+      const fileName = Date.now() + file.md5 + ext
       if (fileSize > 5000000) return res.status(422).json({ msg: "Image must be less than 5 MB" })
       file.mv(`./public/icon/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message })
@@ -106,7 +106,7 @@ class ProdukSampahController {
       }
     }
 
-      if (req.files !== null || req.files.file) {
+      if (req.files !== null && req.files.file) {
         const file = req.files.file;
         const fileSize = file.data.length;
         const ext = path.extname(file.name);
