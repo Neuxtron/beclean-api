@@ -170,6 +170,28 @@ class DashboardController {
       })
     }
   }
+
+  static async dashboardOperator(req, res) {
+    try {
+      const recentAktivitas = await DashboardService.getRecentAktivitas()
+      const jadwalHariIni = await DashboardService.getJadwalHariIni()
+      return res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil data dashboard operator",
+        data: {
+          recentAktivitas,
+          jadwalHariIni
+        },
+      })
+    } catch (error) {
+      log.error(error.message)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
+    }
+  }
 }
 
 module.exports = DashboardController;
