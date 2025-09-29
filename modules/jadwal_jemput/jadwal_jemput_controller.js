@@ -93,7 +93,8 @@ class JadwalJemputController {
         },
         "user",
         "driver",
-      ]
+      ],
+      order: [["jadwal", "DESC"]]
       })
       return res.status(200).json({
         status: true,
@@ -198,6 +199,29 @@ class JadwalJemputController {
         status: true,
         message: "Berhasil menghapus jadwal penjemputan sampah",
         data: null,
+      })
+    } catch (error) {
+      log.error(error.message)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: null,
+      })
+    }
+  }
+
+  static async jadwalForOperator(req, res) {
+    try {
+      const jadwal = await JadwalJemputModel.findAll({
+        include: ["user", "driver", "penyetoran_sampah"],
+        order: [["jadwal", "DESC"]]
+      })
+      const users = await UserModel.findAll()
+      const drivers = await DriverModel.findAll()
+      return res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil data jadwal, user, dan driver",
+        data: { jadwal, users, drivers },
       })
     } catch (error) {
       log.error(error.message)
