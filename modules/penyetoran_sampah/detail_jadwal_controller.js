@@ -108,12 +108,10 @@ const UserModel = require("../user/user_model");
         setoranData.push({ ...item, harga })
       })
       await Promise.allSettled(promises)
-      console.log(setoranData)
       const setoran = await PenyetoranSampahModel.bulkCreate(setoranData)
-      console.log(setoran)
       return res.status(201).json({
         status: true,
-        message: "Berhasil menambahkan data penjemputan sampah",
+        message: "Berhasil menambahkan data penginputan sampah",
         data: setoran,
       })
     } catch (error) {

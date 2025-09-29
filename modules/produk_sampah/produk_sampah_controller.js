@@ -5,6 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const { Op } = require("sequelize");
 const ProdukSampahService = require("./produk_sampah_service")
+const UserModel = require("../user/user_model")
 
 class ProdukSampahController {
   static async allProduk(req, res) {
@@ -177,6 +178,28 @@ class ProdukSampahController {
     }
   }
 
+  static async getForOperator(req, res) {
+    try {
+      const users = await UserModel.findAll()
+      let produk = await ProdukSampahModel.findAll()
+      produk = produk.map((item) => item.get())
+
+      const url = getUrl(req)
+      produk = ProdukSampahService.parseIcon(produk, url)
+      return res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil data user dan produk",
+        data: { users, produk },
+      });
+    } catch (error) {
+      log.error(error.message);
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silakan coba lagi",
+        data: null,
+      });
+    }
+  }
 }
 
 module.exports = ProdukSampahController
