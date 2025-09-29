@@ -22,6 +22,10 @@ const DriverModel = sequelize.define("driver", {
     type: STRING,
     allowNull: false,
   },
+  nomorPlat: {
+    type: STRING,
+    allowNull: false,
+  },
   password: {
     type: STRING,
     allowNull: false,
