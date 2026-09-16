@@ -1,8 +1,8 @@
 export const supportedBanks = [
-  "MANDIRI_VIRTUAL_ACCOUNT",
-  "BCA_VIRTUAL_ACCOUNT",
-  "BRI_VIRTUAL_ACCOUNT",
-  "BNI_VIRTUAL_ACCOUNT"
+  "MANDIRI",
+  "BCA",
+  "BRI",
+  "BNI"
 ]
 export const supportedEWallets = [
   "GOPAY",
